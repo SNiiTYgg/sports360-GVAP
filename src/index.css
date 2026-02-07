@@ -1,0 +1,514 @@
+@import url('@fontsource/plus-jakarta-sans/400.css');
+@import url('@fontsource/plus-jakarta-sans/500.css');
+@import url('@fontsource/plus-jakarta-sans/600.css');
+@import url('@fontsource/plus-jakarta-sans/700.css');
+
+/* Elegant heading font for Houses page */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * campus360 Design System
+ * Instagram-inspired modern sports event theme
+ * All colors in HSL for proper theming
+ */
+
+@layer base {
+  :root {
+    /* Base Colors */
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
+
+    /* Card & Surface */
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    /* Popover & Modal */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    /* Primary Brand - Vibrant Blue */
+    --primary: 220 90% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Soft Gray */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 15% 25%;
+
+    /* Muted */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    /* Accent - Gradient Start */
+    --accent: 340 82% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 220 90% 56%;
+
+    --radius: 0.75rem;
+
+    --house-aakash: 200 85% 55%;
+    /* Aakash (Sky Blue) */
+    --house-agni: 15 90% 55%;
+    /* Agni (Orange-Red) */
+    --house-jal: 195 90% 50%;
+    /* Jal (Cyan Blue) */
+    --house-prithvi: 140 70% 40%;
+    /* Prithvi (Green) */
+    --house-vayu: 47.08 100% 50%;
+    /* Vayu (Golden Yellow) */
+
+    /* Element Ring Colors (for orbit animation) */
+    --element-aakash: 263 70% 35%;
+    --element-agni: 25 95% 53%;
+    --element-jal: 210 85% 45%;
+    --element-prithvi: 20 60% 45%;
+    --element-vayu: 175 60% 40%;
+
+    /* Element Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(45 100% 60%) 100%);
+    --gradient-aakash: linear-gradient(135deg, hsl(263 70% 35%) 0%, hsl(280 60% 50%) 100%);
+    --gradient-agni: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(0 85% 55%) 100%);
+    --gradient-jal: linear-gradient(135deg, hsl(210 85% 45%) 0%, hsl(195 80% 55%) 100%);
+    --gradient-prithvi: linear-gradient(135deg, hsl(20 60% 45%) 0%, hsl(35 50% 55%) 100%);
+    --gradient-vayu: linear-gradient(135deg, hsl(175 60% 40%) 0%, hsl(160 50% 50%) 100%);
+
+    /* Typography */
+    --font-heading: 'Cormorant Garamond', Georgia, serif;
+
+    /* Element Ring Shadows */
+    --shadow-glow: 0 0 40px -10px;
+
+    /* Instagram-style gradients */
+    --gradient-instagram: linear-gradient(135deg, hsl(340 82% 52%), hsl(280 70% 55%), hsl(220 90% 56%));
+    --gradient-story: linear-gradient(45deg, hsl(45 100% 60%), hsl(340 82% 52%), hsl(280 70% 55%));
+
+    /* Poll colors */
+    --poll-voted: 220 90% 56%;
+    --poll-unvoted: 220 14% 90%;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 15% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 15% 15% / 0.1), 0 2px 4px -2px hsl(220 15% 15% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 15% 15% / 0.1), 0 4px 6px -4px hsl(220 15% 15% / 0.1);
+
+    /* Sidebar (if needed) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode - Instagram-inspired dark theme */
+    --background: 220 15% 8%;
+    --foreground: 220 10% 98%;
+
+    --card: 220 15% 12%;
+    --card-foreground: 220 10% 98%;
+
+    --popover: 220 15% 10%;
+    --popover-foreground: 220 10% 98%;
+
+    --primary: 220 90% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 10% 90%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 340 82% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 220 90% 60%;
+
+    /* Poll colors */
+    --poll-voted: 229 90% 64%;
+    /* Matches #4F6EF7 */
+    --poll-unvoted: 223 34% 36%;
+    /* Matches #3D4F7C */
+
+    /* Dark shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4), 0 2px 4px -2px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.4), 0 4px 6px -4px hsl(0 0% 0% / 0.3);
+
+    /* Dark sidebar */
+    --sidebar-background: 220 15% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Hide scrollbar on mobile */
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+  }
+
+  /* Utility class to hide scrollbar anywhere */
+  .scrollbar-none,
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar,
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Scrollbar visible on desktop only, hidden on mobile */
+  .scrollbar-desktop-only {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  .scrollbar-desktop-only::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-desktop-only::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-desktop-only::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-desktop-only::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Hide scrollbar on mobile */
+  @media (max-width: 768px) {
+    .scrollbar-desktop-only {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .scrollbar-desktop-only::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+@layer components {
+
+  /* Instagram-style story ring gradient */
+  .story-ring {
+    background: var(--gradient-story);
+    padding: 3px;
+    border-radius: 50%;
+  }
+
+  /* Glass effect for modals and overlays */
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl;
+  }
+
+  /* House accent border utilities */
+  .house-accent-aakash {
+    border-color: hsl(var(--house-aakash));
+  }
+
+  .house-accent-agni {
+    border-color: hsl(var(--house-agni));
+  }
+
+  .house-accent-jal {
+    border-color: hsl(var(--house-jal));
+  }
+
+  .house-accent-prithvi {
+    border-color: hsl(var(--house-prithvi));
+  }
+
+  .house-accent-vayu {
+    border-color: hsl(var(--house-vayu));
+  }
+
+  /* House background utilities */
+  .house-bg-aakash {
+    background-color: hsl(var(--house-aakash) / 0.1);
+  }
+
+  .house-bg-agni {
+    background-color: hsl(var(--house-agni) / 0.1);
+  }
+
+  .house-bg-jal {
+    background-color: hsl(var(--house-jal) / 0.1);
+  }
+
+  .house-bg-prithvi {
+    background-color: hsl(var(--house-prithvi) / 0.1);
+  }
+
+  .house-bg-vayu {
+    background-color: hsl(var(--house-vayu) / 0.1);
+  }
+
+  /* Element Ring Styles (for Houses page orbit) */
+  .element-orbit-icon {
+    @apply w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 overflow-hidden;
+  }
+
+  .element-orbit-icon img {
+    @apply w-full h-full object-cover;
+  }
+
+  .element-border-aakash {
+    background: var(--gradient-aakash);
+    padding: 3px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-glow) hsl(var(--element-aakash) / 0.4);
+  }
+
+  .element-border-agni {
+    background: var(--gradient-agni);
+    padding: 3px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-glow) hsl(var(--element-agni) / 0.4);
+  }
+
+  .element-border-jal {
+    background: var(--gradient-jal);
+    padding: 3px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-glow) hsl(var(--element-jal) / 0.4);
+  }
+
+  .element-border-prithvi {
+    background: var(--gradient-prithvi);
+    padding: 3px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-glow) hsl(var(--element-prithvi) / 0.4);
+  }
+
+  .element-border-vayu {
+    background: var(--gradient-vayu);
+    padding: 3px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-glow) hsl(var(--element-vayu) / 0.4);
+  }
+
+  /* Gold gradient text */
+  .gold-text {
+    background: var(--gradient-gold);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Decorative border with gold accent */
+  .decorative-border {
+    @apply relative;
+  }
+
+  .decorative-border::before {
+    content: '';
+    @apply absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-1 rounded-full;
+    background: var(--gradient-gold);
+  }
+
+  /* Heading font utility */
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform duration-200;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-0.5;
+  }
+
+  /* ================================
+   * ARENA STYLES
+   * ================================ */
+
+  /* Animated gradient border for LIVE match cards */
+  .arena-card-live {
+    position: relative;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--background), var(--background)) padding-box,
+      linear-gradient(135deg, #ef4444, #f97316, #ef4444, #f97316) border-box;
+    background-size: 100% 100%, 300% 300%;
+    animation: arena-live-glow 3s ease infinite;
+  }
+
+  .arena-card-live::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #ef4444, #f97316, #ef4444, #f97316);
+    background-size: 300% 300%;
+    z-index: -1;
+    animation: arena-live-glow 3s ease infinite;
+    filter: blur(8px);
+    opacity: 0.5;
+  }
+
+  @keyframes arena-live-glow {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Flag container - consistent sizing */
+  .arena-flag-container {
+    @apply w-16 h-16 rounded-lg overflow-hidden bg-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Flag image - crop from center */
+  .arena-flag {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Horizontal scroll container */
+  .arena-scroll-container {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .arena-scroll-container>div>* {
+    scroll-snap-align: start;
+  }
+}
