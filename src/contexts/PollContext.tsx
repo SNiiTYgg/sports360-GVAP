@@ -9,6 +9,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { getFirebaseToken } from '@/lib/secureAction';
 
 // Generate device token fallback (for backward compatibility only)
 const getDeviceToken = (): string => {
@@ -55,13 +56,18 @@ export const PollProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Get user identifier - prefer Firebase UID, fallback to device token
-    const getUserIdentifier = useCallback((): string => {
+    // Get user identifier - Firebase UID only (required for voting)
+    const getUserIdentifier = useCallback((): string | null => {
         if (user?.uid) {
             return user.uid;
         }
-        return getDeviceToken();
+        return null;
     }, [user?.uid]);
+
+    // Get legacy device token for backward compat (checking old votes)
+    const getLegacyDeviceToken = useCallback((): string | null => {
+        return localStorage.getItem('poll_voter_id');
+    }, []);
 
     // Fetch all polls with vote counts using Supabase count (no row limit!)
     const fetchPolls = useCallback(async () => {
@@ -136,55 +142,79 @@ export const PollProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, []);
 
-    // Fetch user's existing votes
+    // Fetch user's existing votes (check both user_id and legacy user_identifier)
     const fetchUserVotes = useCallback(async () => {
         try {
-            const userId = getUserIdentifier();
-            const { data, error: fetchError } = await supabase
-                .from('poll_votes')
-                .select('poll_id, selected_option')
-                .eq('user_identifier', userId);
-
-            if (fetchError) throw fetchError;
-
+            const firebaseUid = getUserIdentifier();
+            const legacyToken = getLegacyDeviceToken();
             const votesMap: Record<string, string> = {};
-            (data || []).forEach((v) => {
-                votesMap[v.poll_id] = v.selected_option;
-            });
+
+            // Query by Firebase UID (new system)
+            if (firebaseUid) {
+                const { data, error: fetchError } = await supabase
+                    .from('poll_votes')
+                    .select('poll_id, selected_option')
+                    .eq('user_id', firebaseUid);
+
+                if (!fetchError && data) {
+                    data.forEach((v) => {
+                        votesMap[v.poll_id] = v.selected_option;
+                    });
+                }
+            }
+
+            // Also check legacy device token votes (backward compat)
+            if (legacyToken) {
+                const { data, error: fetchError } = await supabase
+                    .from('poll_votes')
+                    .select('poll_id, selected_option')
+                    .eq('user_identifier', legacyToken);
+
+                if (!fetchError && data) {
+                    data.forEach((v) => {
+                        if (!votesMap[v.poll_id]) {
+                            votesMap[v.poll_id] = v.selected_option;
+                        }
+                    });
+                }
+            }
 
             setUserVotes(votesMap);
         } catch (err) {
             console.error('Error fetching user votes:', err);
         }
-    }, [getUserIdentifier]);
+    }, [getUserIdentifier, getLegacyDeviceToken]);
 
-    // Vote on a poll
+    // Vote on a poll — routes through Edge Function with Firebase JWT
     const vote = useCallback(async (pollId: string, option: string): Promise<{ success: boolean; error?: string }> => {
         try {
-            const userId = getUserIdentifier();
+            // Require Firebase login
+            if (!user) {
+                return { success: false, error: 'Please sign in with Google to vote' };
+            }
 
-            const { error: voteError } = await supabase
-                .from('poll_votes')
-                .insert({
+            const token = await getFirebaseToken();
+            if (!token) {
+                return { success: false, error: 'Failed to get auth token. Please sign in again.' };
+            }
+
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+            const response = await fetch(`${supabaseUrl}/functions/v1/vote`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     poll_id: pollId,
-                    user_identifier: userId,
                     selected_option: option,
-                });
+                }),
+            });
 
-            if (voteError) {
-                if (voteError.code === '23505') {
-                    return { success: false, error: 'You have already voted on this poll' };
-                }
-                if (voteError.message?.includes('Poll is paused')) {
-                    return { success: false, error: 'This poll is currently paused' };
-                }
-                if (voteError.message?.includes('Poll has ended permanently')) {
-                    return { success: false, error: 'This poll has ended' };
-                }
-                if (voteError.message?.includes('Poll does not exist')) {
-                    return { success: false, error: 'Poll not found' };
-                }
-                throw voteError;
+            const data = await response.json();
+
+            if (!response.ok) {
+                return { success: false, error: data.error || `Vote failed (${response.status})` };
             }
 
             // Update local state immediately (shared across all components!)
@@ -210,7 +240,7 @@ export const PollProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             console.error('Error voting:', err);
             return { success: false, error: err instanceof Error ? err.message : 'Failed to submit vote' };
         }
-    }, [getUserIdentifier]);
+    }, [user]);
 
     // Check if user has voted on a poll
     const hasVoted = useCallback((pollId: string): boolean => {

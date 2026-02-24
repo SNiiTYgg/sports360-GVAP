@@ -1,1 +1,9 @@
 project_id = "wwegeuzgmpwrmnixuwdx"
+
+# Disable Supabase's automatic JWT validation for Edge Functions
+# that use Firebase Auth tokens (manually verified inside the function)
+[functions.vote]
+verify_jwt = false
+
+[functions.secure-action]
+verify_jwt = false

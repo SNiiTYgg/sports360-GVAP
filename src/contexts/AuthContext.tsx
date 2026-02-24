@@ -1,10 +1,11 @@
 /**
  * AuthContext - campus360
  * 
- * Firebase authentication context for poll voting.
+ * Firebase authentication context for poll voting & secure actions.
  * Provides:
  * - Current user state
  * - Google Sign-In method
+ * - Get ID Token (JWT) for Edge Function auth
  * - Auth loading state
  * 
  * No sign-out provided - users stay logged in until cache clear.
@@ -18,6 +19,7 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<User | null>;
+    getIdToken: (forceRefresh?: boolean) => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -62,8 +64,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    // Get Firebase ID Token (JWT) for Edge Function auth
+    const getIdToken = async (forceRefresh = false): Promise<string | null> => {
+        if (!auth || !user) {
+            return null;
+        }
+        try {
+            return await user.getIdToken(forceRefresh);
+        } catch (error) {
+            console.error('Failed to get ID token:', error);
+            return null;
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle }}>
+        <AuthContext.Provider value={{ user, loading, signInWithGoogle, getIdToken }}>
             {children}
         </AuthContext.Provider>
     );
