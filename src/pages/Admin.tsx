@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, LogOut, Image, BarChart3, Gamepad2, Moon, Sun, Home, FileText, Trophy, Swords, Users, Shield } from 'lucide-react';
+import { ArrowLeft, LogOut, Image, BarChart3, Gamepad2, Moon, Sun, Home, FileText, Trophy, Swords, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from '@/hooks/useTheme';
 import { usePersistentTab } from '@/hooks/usePersistentTab';
@@ -24,7 +24,7 @@ import AuditLogViewer from '@/components/admin/AuditLogViewer';
 import WinnerManager from '@/components/admin/WinnerManager';
 import ArenaManager from '@/components/admin/ArenaManager';
 import CommonMatchManager from '@/components/admin/CommonMatchManager';
-import AdminManager from '@/components/admin/AdminManager';
+
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { logAdminAction } from '@/lib/adminActivityLog';
@@ -39,7 +39,7 @@ const TAB_CONFIG: { id: AdminTab; label: string; icon: React.ReactNode }[] = [
   { id: 'winner', label: 'Winner', icon: <Trophy className="h-4 w-4" /> },
   { id: 'polls', label: 'Polls', icon: <BarChart3 className="h-4 w-4" /> },
   { id: 'logs', label: 'Logs', icon: <FileText className="h-4 w-4" /> },
-  { id: 'admins', label: 'Admins', icon: <Shield className="h-4 w-4" /> },
+
 ];
 
 const Admin: React.FC = () => {
@@ -226,11 +226,7 @@ const Admin: React.FC = () => {
               </TabsContent>
             )}
 
-            {canAccessTab('admins') && (
-              <TabsContent value="admins">
-                <AdminManager />
-              </TabsContent>
-            )}
+
           </Tabs>
         </main>
       </div>

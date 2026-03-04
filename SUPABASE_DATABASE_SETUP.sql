@@ -243,9 +243,10 @@ CREATE POLICY "Authenticated users can manage app_settings" ON public.app_settin
 -- ============================================================================
 -- TABLE 8: ADMIN_ROLES
 -- ============================================================================
--- Stores role assignments for admin users. Each user can have one role.
--- Roles determine which tabs and features they can access in admin panel.
+-- Stores role assignments for admin users. Each user can have MULTIPLE roles.
+-- The allowed tabs in admin panel are merged from all assigned roles.
 -- house_name is only used for house_social role (restricts to specific house).
+-- UNIQUE(user_id, role) prevents assigning the same role twice.
 -- ============================================================================
 
 CREATE TABLE public.admin_roles (
@@ -257,8 +258,12 @@ CREATE TABLE public.admin_roles (
     email TEXT,
     is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMPTZ DEFAULT now(),
-    UNIQUE(user_id)
+    UNIQUE(user_id, role)
 );
+
+-- Index for fast role lookups by user
+CREATE INDEX IF NOT EXISTS idx_admin_roles_user ON public.admin_roles(user_id);
+
 
 ALTER TABLE public.admin_roles ENABLE ROW LEVEL SECURITY;
 
